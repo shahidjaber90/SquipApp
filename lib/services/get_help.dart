@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:squip/Utils/colors.dart';
 import 'package:flutter_emoji/flutter_emoji.dart';
+import 'package:squip/Views/home_view.dart';
 
-getHelp(context,controllers,hintText,phone,phonetext,counsellor){
+getHelp(context,controllers,hintText,phone,phonetext,counsellor,validate){
   return showDialog(
     context: context,
     builder: (BuildContext  context) {
@@ -53,6 +54,7 @@ getHelp(context,controllers,hintText,phone,phonetext,counsellor){
                           padding: const EdgeInsets.only(left:10),
                           child: TextFormField(
                             controller: controllers,
+                            validator: validate,
                             maxLines: 5,
                             minLines: 2,
                             decoration: InputDecoration(
@@ -87,6 +89,7 @@ getHelp(context,controllers,hintText,phone,phonetext,counsellor){
                           padding: const EdgeInsets.only(left: 10),
                           child: TextFormField(
                             controller: phone,
+                            validator: validate,
                             keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               fillColor: ColorConstant.greyColor,
@@ -111,11 +114,11 @@ getHelp(context,controllers,hintText,phone,phonetext,counsellor){
                 .add({
                   "message": controllers.text,
                   "phone": phone.text
-              })
+              });
+                controllers.clear();
+                phone.clear();
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const HomeViewPage()))
               .then((result) => {
-                Navigator.pop(context),
-                controllers.clear(),
-                phone.clear(),
               })
               .catchError((err) => print(err));
           }

@@ -28,6 +28,8 @@ class _HospitalMapViewPageState extends State<HospitalMapViewPage> {
   );
 
   List<Marker> _marker = [];
+
+  final _formKey = GlobalKey<FormState>();
   
 
   @override
@@ -39,47 +41,54 @@ class _HospitalMapViewPageState extends State<HospitalMapViewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            Expanded(
-              child: GoogleMap(
-                mapType: MapType.normal,
-                initialCameraPosition: _kGooglePlex,
-                markers: Set<Marker>.of(_marker),
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
+    return Form(
+      key: _formKey,
+      child: SafeArea(
+        child: Scaffold(
+          body: Column(
+            children: [
+              Expanded(
+                child: GoogleMap(
+                  mapType: MapType.normal,
+                  initialCameraPosition: _kGooglePlex,
+                  markers: Set<Marker>.of(_marker),
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                ),
               ),
-            ),
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: ColorConstant.btnGreyColor,
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: ColorConstant.btnGreyColor,
+                ),
+                child: ElevatedButton(
+                    onPressed: () {
+                      getHelp(context, messageController, 'Message',
+                          phoneController, 'Phone','hospital',(value) {
+                              if (value!.length < 16) {
+                                return "Please enter some message.";
+                              }
+                            },);
+                               
+    
+                   },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: ColorConstant.btnGreyColor,
+                      elevation: 0,
+                      maximumSize: const Size(350, 70),
+                    ),
+                    child: Text(
+                      'Get Help',
+                      style: GoogleFonts.ebGaramond(
+                          color: ColorConstant.whiteColor,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 1),
+                    )),
               ),
-              child: ElevatedButton(
-                  onPressed: () {
-                    getHelp(context, messageController, 'Message',
-                        phoneController, 'Phone','hospital');
-                             
-
-                 },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorConstant.btnGreyColor,
-                    elevation: 0,
-                    maximumSize: const Size(350, 70),
-                  ),
-                  child: Text(
-                    'Get Help',
-                    style: GoogleFonts.ebGaramond(
-                        color: ColorConstant.whiteColor,
-                        fontSize: 24,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 1),
-                  )),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

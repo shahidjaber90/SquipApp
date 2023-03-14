@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:squip/Provider/register_provider.dart';
 import 'package:squip/Views/police_view.dart';
 import 'package:squip/Views/splash_logo.dart';
+import 'package:squip/Views/splash_screen.dart';
 import 'package:squip/firebase_options.dart';
 
 void main() async {
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       ],
       child:const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:  PoliceMapViewPage(),
+        home:  SplashScreen(),
       ),
     );
   }

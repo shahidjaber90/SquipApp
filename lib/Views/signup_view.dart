@@ -39,23 +39,23 @@ class _SignUpPageState extends State<SignUpPage> {
     ];
 
     emailValidator(value) {
-    var pattern =
-        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value)) {
-      return 'Email format is invalid';
-    } else {
-      return null;
+      var pattern =
+          r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+      RegExp regex = new RegExp(pattern);
+      if (!regex.hasMatch(value)) {
+        return 'Email format is invalid';
+      } else {
+        return null;
+      }
     }
-  }
 
-   pwdValidator(value) {
-    if (value.length < 8) {
-      return 'Password must be longer than 8 characters';
-    } else {
-      return null;
+    pwdValidator(value) {
+      if (value.length < 8) {
+        return 'Password must be longer than 8 characters';
+      } else {
+        return null;
+      }
     }
-  }
 
     var _currentItemSelected = "user";
     var userType = "user";
@@ -112,41 +112,43 @@ class _SignUpPageState extends State<SignUpPage> {
                           iconValue: const Icon(Icons.people_alt_outlined),
                           validator: (value) {
                             if (value.length < 3) {
-                          return "Please enter a valid user name.";
+                              return "Please enter a valid user name.";
                             }
                           },
-                          inputType: TextInputType.emailAddress,obsecure: false),
+                          inputType: TextInputType.emailAddress,
+                          obsecure: false),
                       TextFieldWidget(
                           controllers: emailController,
                           hintText: 'Email',
                           iconValue: const Icon(Icons.email),
                           validator: emailValidator,
-                          inputType: TextInputType.emailAddress,obsecure: false),
+                          inputType: TextInputType.emailAddress,
+                          obsecure: false),
                       TextFieldWidget(
                           controllers: passwordController,
                           hintText: 'Password',
                           iconValue: const Icon(Icons.lock),
                           validator: pwdValidator,
-                          inputType: TextInputType.emailAddress,obsecure: true),
+                          inputType: TextInputType.emailAddress,
+                          obsecure: true),
                       TextFieldWidget(
                           controllers: phoneController,
                           hintText: 'Phone',
                           iconValue: const Icon(Icons.contact_phone_outlined),
                           validator: (value) {
                             if (value.length < 11) {
-                          return "Please enter a valid contact.";
+                              return "Please enter a valid contact.";
                             }
                           },
-                          inputType: TextInputType.number,obsecure: false),
-                      
+                          inputType: TextInputType.number,
+                          obsecure: false),
                       Padding(
-                        padding: const EdgeInsets.only(left: 34,right: 34),
+                        padding: const EdgeInsets.only(left: 34, right: 34),
                         child: DropdownButtonFormField<UserType>(
                           dropdownColor: ColorConstant.greyColor,
                           borderRadius: BorderRadius.circular(24),
                           value: val.userType,
-                          items: 
-                          [
+                          items: [
                             DropdownMenuItem(
                               value: UserType.user,
                               child: Text(
@@ -175,7 +177,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 'Ambulance',
                                 style: GoogleFonts.ebGaramond(
                                     color: ColorConstant.darkGreyColor,
-                                    fontSize:18,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w400,
                                     letterSpacing: 1),
                               ),
@@ -197,67 +199,106 @@ class _SignUpPageState extends State<SignUpPage> {
                           },
                           decoration: InputDecoration(
                             labelText: 'User Type',
-                                labelStyle:  GoogleFonts.ebGaramond(
-                                    color: ColorConstant.primaryColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                    letterSpacing: 1),
+                            labelStyle: GoogleFonts.ebGaramond(
+                                color: ColorConstant.primaryColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 1),
                           ),
                         ),
                       ),
-                      
-                      SubmitButton(textButton: 'Sign Up', 
-                      btnColor: ColorConstant.btnGreyColor, 
-                      textColor: ColorConstant.whiteColor, 
-                      onTap: ()async{
+                      SubmitButton(
+                          textButton: 'Sign Up',
+                          btnColor: ColorConstant.btnGreyColor,
+                          textColor: ColorConstant.whiteColor,
+                          onTap: () async {
+                            // RoleRegisterProvider().createUser(context, userNameController.text,
+                            //  emailController.text,
+                            //  passwordController.text,
+                            //  phoneController.text,
+                            //  _formKey);
 
-                        // RoleRegisterProvider().createUser(context, userNameController.text,
-                        //  emailController.text, 
-                        //  passwordController.text, 
-                        //  phoneController.text, 
-                        //  _formKey);
-
-
-                        if (_formKey.currentState!.validate()) {
-                          final FirebaseAuth auth = FirebaseAuth.instance;
-                        await  FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: emailController.text,
-                                  password: passwordController.text)
-                              .then((currentUser) => FirebaseFirestore.instance
-                                  .collection("users").doc(currentUser.user!.uid).set
-                                  ({
-                                    "user name": userNameController.text,
-                                    "email": emailController.text,
-                                    "password": passwordController.text,
-                                    "phone": phoneController.text,
-                                    "user type": val.userType.name,
-                                    "uid": currentUser.user!.uid,
-                                  })
-                                  .then((result) => {
-                                        Navigator.pushAndRemoveUntil(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => UserLoginView()),
-                                            (_) => false),
-                                        userNameController.clear(),
-                                        emailController.clear(),
-                                        passwordController.clear(),
-                                        phoneController.clear(),
+                            if (_formKey.currentState!.validate()) {
+                              final FirebaseAuth auth = FirebaseAuth.instance;
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                      email: emailController.text,
+                                      password: passwordController.text)
+                                  .then((currentUser) => FirebaseFirestore
+                                      .instance
+                                      .collection("users")
+                                      .doc(currentUser.user!.uid)
+                                      .set({
+                                        "user name": userNameController.text,
+                                        "email": emailController.text,
+                                        "password": passwordController.text,
+                                        "phone": phoneController.text,
+                                        "user type": val.userType.name,
+                                        "uid": currentUser.user!.uid,
                                       })
-                                  .catchError((err) => print('Error is kanjer:  ${err}')))
-                              .catchError((err) => print('Error is kanjer:  ${err}'));
-                        } 
-
-
-
-
-
-
-
-
-                      }),
-
+                                      .then((result) => {
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        UserLoginView()),
+                                                (_) => false),
+                                            userNameController.clear(),
+                                            emailController.clear(),
+                                            passwordController.clear(),
+                                            phoneController.clear(),
+                                          })
+                                      .catchError((e) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  'SignUp Failed',
+                                                  style: GoogleFonts.ebGaramond(
+                                                      color: ColorConstant
+                                                          .darkGreyColor,
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      letterSpacing: 1),
+                                                ),
+                                                content: Text(e.toString(),style: GoogleFonts.ebGaramond(
+            color: ColorConstant.darkGreyColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 1
+          ),),
+                                              );
+                                            });
+                                      }
+                                          ))
+                                  .catchError((e) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  'SignUp Failed',
+                                                  style: GoogleFonts.ebGaramond(
+                                                      color: ColorConstant
+                                                          .darkGreyColor,
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      letterSpacing: 1),
+                                                ),
+                                                content: Text(e.toString(),style: GoogleFonts.ebGaramond(
+            color: ColorConstant.darkGreyColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 1
+          ),),
+                                              );
+                                            });
+                                      });
+                            }
+                          }),
                       Padding(
                         padding: const EdgeInsets.only(top: 0),
                         child: Row(

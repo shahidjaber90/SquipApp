@@ -161,7 +161,8 @@ class _UserLoginViewState extends State<UserLoginView> {
                                             .get()
                                             .then((DocumentSnapshot result) {
                                           if (result.exists) {
-                                            if (result.get('user type') == "police") {
+                                            if (result.get('user type') ==
+                                                "police") {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
@@ -169,7 +170,9 @@ class _UserLoginViewState extends State<UserLoginView> {
                                                       const PoliceMapViewPage(),
                                                 ),
                                               );
-                                            } else  if (result.get('user type') == "ambulance") {
+                                            } else if (result
+                                                    .get('user type') ==
+                                                "ambulance") {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
@@ -177,7 +180,9 @@ class _UserLoginViewState extends State<UserLoginView> {
                                                       const HospitalMapViewPage(),
                                                 ),
                                               );
-                                            } else  if (result.get('user type') == "fireBrigade") {
+                                            } else if (result
+                                                    .get('user type') ==
+                                                "fireBrigade") {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
@@ -185,7 +190,9 @@ class _UserLoginViewState extends State<UserLoginView> {
                                                       const FireBrigadeMapViewPage(),
                                                 ),
                                               );
-                                            } else  if (result.get('user type') == "user") {
+                                            } else if (result
+                                                    .get('user type') ==
+                                                "user") {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(
@@ -194,19 +201,62 @@ class _UserLoginViewState extends State<UserLoginView> {
                                                 ),
                                               );
                                             }
-                                           
                                           }
-                                        }).catchError((err) {
-                                          
-                                        print('Error yahan ata h bhai: '+err.toString());
-                                        }
-                                        
-                                        ))
-                                    .catchError((err) {
-                                        print('Error yahan bhi ata h bhai: '+err.toString());
-                                      
-                                    }
-                                    );
+                                        }).catchError((e) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                    'SignUp Failed',
+                                                    style:
+                                                        GoogleFonts.ebGaramond(
+                                                            color: ColorConstant
+                                                                .darkGreyColor,
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            letterSpacing: 1),
+                                                  ),
+                                                  content: Text(
+                                                    e.toString(),
+                                                    style:
+                                                        GoogleFonts.ebGaramond(
+                                                            color: ColorConstant
+                                                                .darkGreyColor,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            letterSpacing: 1),
+                                                  ),
+                                                );
+                                              });
+                                        }))
+                                    .catchError((e) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  'SignUp Failed',
+                                                  style: GoogleFonts.ebGaramond(
+                                                      color: ColorConstant
+                                                          .darkGreyColor,
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      letterSpacing: 1),
+                                                ),
+                                                content: Text(e.toString(),style: GoogleFonts.ebGaramond(
+            color: ColorConstant.darkGreyColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 1
+          ),),
+                                              );
+                                            });
+                                      }
+                                );
                               }
                             },
                             textButton: 'Sign In ',
