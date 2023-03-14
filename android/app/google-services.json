@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "474860078400",
+    "project_id": "emergencyapp-7e179",
+    "storage_bucket": "emergencyapp-7e179.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474860078400:android:93865b0c8faa298f33e6a5",
+        "android_client_info": {
+          "package_name": "com.example.squip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474860078400-3bk3lrtku82tb8gafpaja4rppqp07art.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv6VK5ptVAZ8KL8AFHMxXw3HHdV-QFHo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474860078400-3bk3lrtku82tb8gafpaja4rppqp07art.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "474860078400-pl47qm2ea0knmelnc7gq8q1rv9qhe5go.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.squip"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
