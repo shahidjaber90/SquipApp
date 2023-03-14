@@ -29,6 +29,8 @@ class _SignUpPageState extends State<SignUpPage> {
     TextEditingController phoneController = TextEditingController();
 
     RoleRegisterProvider rProvider = RoleRegisterProvider();
+    final String userData;
+
     List typeUser = [
       rProvider.setUserType(UserType.police).toString(),
       rProvider.setUserType(UserType.ambulance).toString(),
@@ -229,7 +231,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     "email": emailController.text,
                                     "password": passwordController.text,
                                     "phone": phoneController.text,
-                                    "user type": rProvider.userType,
+                                    "user type": val.userType.name,
                                     "uid": currentUser.user!.uid,
                                   })
                                   .then((result) => {

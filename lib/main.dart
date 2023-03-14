@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:squip/Provider/register_provider.dart';
+import 'package:squip/Views/police_view.dart';
 import 'package:squip/Views/splash_logo.dart';
 import 'package:squip/firebase_options.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       ],
       child:const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home:  SplashLogo(),
+        home:  PoliceMapViewPage(),
       ),
     );
   }

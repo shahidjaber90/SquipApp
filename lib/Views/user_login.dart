@@ -161,7 +161,7 @@ class _UserLoginViewState extends State<UserLoginView> {
                                             .get()
                                             .then((DocumentSnapshot result) {
                                           if (result.exists) {
-                                            if (result.get('user type') == "Police") {
+                                            if (result.get('user type') == "police") {
                                               Navigator.pushReplacement(
                                                 context,
                                                 MaterialPageRoute(

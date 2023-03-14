@@ -47,6 +47,7 @@ dependencies:
   geolocator: ^9.0.2
   geocoding: ^2.0.5
   dropdown_button2: ^2.0.0
+  flutter_emoji: ^2.4.0
   # firebase_messaging: 
   # flutter_local_notifications:
   # app_settings: 

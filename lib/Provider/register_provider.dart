@@ -1,12 +1,9 @@
-import 'dart:math';
+// import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:squip/Utils/colors.dart';
 import 'package:squip/Views/user_login.dart';
-import 'package:squip/main.dart';
 
 enum UserType {
   user,
@@ -14,6 +11,8 @@ enum UserType {
   police,
   fireBrigade,
 }
+
+var userType;
 
 class RoleRegisterProvider with ChangeNotifier {
   TextEditingController username = TextEditingController();
@@ -23,20 +22,25 @@ class RoleRegisterProvider with ChangeNotifier {
 
   // final FirebaseAuth auth = FirebaseAuth.instance;
 
+
+
   UserType  _userType = UserType.user;
 
   UserType get userType => _userType;
 
 
+  
+
   setUserType(UserType usertype) {
     _userType = usertype;
     notifyListeners();
+    return _userType;
   }
 
   void createUser(context, userName, email, password, phone, formkey) async {
     if (formkey.currentState.validated()) {
 
-      final FirebaseAuth auth = FirebaseAuth.instance;
+      // final FirebaseAuth auth = FirebaseAuth.instance;
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((currentUser) => FirebaseFirestore.instance
@@ -61,9 +65,7 @@ class RoleRegisterProvider with ChangeNotifier {
                     email.clear(),
                     password.clear(),
                     phone.clear(),
-                  })
-              .catchError((err) => print('Error is kanjer:  ${err}')))
-          .catchError((err) => print('Error is kanjer:  ${err}'));
+                  })).catchError((err) => print('Error is kanjer:  ${err}'));
       notifyListeners();
     }
 
