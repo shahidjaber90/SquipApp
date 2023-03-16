@@ -138,7 +138,7 @@ class _PoliceMapViewPageState extends State<PoliceMapViewPage> {
   }
 
   void saveToken(String token) async {
-    await FirebaseFirestore.instance.collection("emergency").doc("Shahid Jaber").set({
+    await FirebaseFirestore.instance.collection("userTokens").doc("User2").set({
       'token': token,
     });
   }
@@ -168,12 +168,12 @@ class _PoliceMapViewPageState extends State<PoliceMapViewPage> {
 
   void sendPushMessage(String token, String title, String body) async {
     try {
-      await http.post(
-        Uri.parse('https://fcm.google.apis.com/fcm/send'),
+      http.Response response = await http.post(
+        Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
-          'Content-Type': 'applicatioin/json',
+          'Content-Type': 'application/json',
           'Authorization':
-              'key=BAYOmvGrRfIH3kPF2Mv-yrLQwcROo5Xle3i8ySm5AcxTb15L3yclVOHkVVBtOdqeCZdje8W1V8EM3XOmDk7UELU',
+              'key=AAAAbo_dxUA:APA91bF_NVZHgvkviDIUWjSnAYIracxYidjm81kj_GcY2HkNQx-n0IGRLnceQtZzAvkAe2LMLDw76HtL760A-qhtnrBKZrCxE_s7EPcbu3BsIlP3Doqp8V1qzaazTnHKgCn_9ZLtyGZG',
         },
         body: jsonEncode(
           <String, dynamic>{
