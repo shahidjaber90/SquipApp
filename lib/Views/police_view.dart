@@ -12,6 +12,7 @@ import 'package:squip/Utils/colors.dart';
 import 'package:squip/Utils/polica_data.dart';
 import 'package:squip/services/get_help.dart';
 import 'package:http/http.dart' as http;
+import 'package:squip/services/notification_controller.dart';
 
 class PoliceMapViewPage extends StatefulWidget {
   const PoliceMapViewPage({super.key});
@@ -22,9 +23,8 @@ class PoliceMapViewPage extends StatefulWidget {
 
 class _PoliceMapViewPageState extends State<PoliceMapViewPage> {
 
-  String? mtoken = " ";
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  
+  
 
   final firestoreDB =
       FirebaseFirestore.instance.collection("hospitals").snapshots();
@@ -78,127 +78,14 @@ class _PoliceMapViewPageState extends State<PoliceMapViewPage> {
     // TODO: implement initState
     _marker.addAll(policeList);
     super.initState();
-    requestPermission();
-    getToken();
-    initInfo();
+    Notifications().requestPermission();
+    Notifications().getToken();
+    Notifications().initInfo();
   }
 
-  initInfo() {
-    var androidInitialize =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iOSInitialize = const IOSInitializationSettings();
-    var initializationsSettins =
-        InitializationSettings(android: androidInitialize, iOS: iOSInitialize);
-    FlutterLocalNotificationsPlugin().initialize(initializationsSettins,
-        onSelectNotification: (String? payload) async {
-      try {
-        if (payload != null && payload.isNotEmpty) {
-        } else {}
-      } catch (e) {}
-      return;
-    });
+  
 
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      print("...............onMessage...............");
-      print(
-          "onMessage: ${message.notification?.title}/${message.notification?.body}");
-
-      BigTextStyleInformation bigTextStyleInformation = BigTextStyleInformation(
-        message.notification!.body.toString(),
-        htmlFormatBigText: true,
-        contentTitle: message.notification!.title.toString(),
-        htmlFormatContentTitle: true,
-      );
-      AndroidNotificationDetails androidPlatformChannelSpecifics =
-          AndroidNotificationDetails(
-        'dbfood',
-        'dbfood',
-        importance: Importance.max,
-        styleInformation: bigTextStyleInformation,
-        priority: Priority.max,
-        playSound: false,
-      );
-      NotificationDetails platformChannelSpecifics = NotificationDetails(
-          android: androidPlatformChannelSpecifics,
-          iOS: const IOSNotificationDetails());
-      await flutterLocalNotificationsPlugin.show(0, message.notification?.title,
-          message.notification?.body, platformChannelSpecifics,
-          payload: message.data['title']);
-    });
-  }
-
-  void getToken() async {
-    await FirebaseMessaging.instance.getToken().then((token) {
-      setState(() {
-        mtoken = token;
-        print("My token is ${mtoken}");
-      });
-      saveToken(token!);
-    });
-  }
-
-  void saveToken(String token) async {
-    await FirebaseFirestore.instance.collection("userTokens").doc("User2").set({
-      'token': token,
-    });
-  }
-
-  void requestPermission() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    NotificationSettings settings = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('user granted permission');
-    } else if (settings.authorizationStatus ==
-        AuthorizationStatus.provisional) {
-      print('user granted provisional permission');
-    } else {
-      print('user declined or has not accepted permission');
-    }
-  }
-
-  void sendPushMessage(String token, String title, String body) async {
-    try {
-      http.Response response = await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization':
-              'key=AAAAbo_dxUA:APA91bF_NVZHgvkviDIUWjSnAYIracxYidjm81kj_GcY2HkNQx-n0IGRLnceQtZzAvkAe2LMLDw76HtL760A-qhtnrBKZrCxE_s7EPcbu3BsIlP3Doqp8V1qzaazTnHKgCn_9ZLtyGZG',
-        },
-        body: jsonEncode(
-          <String, dynamic>{
-            'priority': 'high',
-            'data': <String, dynamic>{
-              'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-              'status': 'done',
-              'body': body,
-              'title': title,
-            },
-            "notification": <String, dynamic>{
-              "title": title,
-              "body": body,
-              "android_channel_id": "dbfood"
-            },
-            "to": token,
-          },
-        ),
-      );
-    } catch (e) {
-      if (kDebugMode) {
-        print("error push notification");
-      }
-    }
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -225,29 +112,10 @@ class _PoliceMapViewPageState extends State<PoliceMapViewPage> {
                 ),
                 child: ElevatedButton(
                     onPressed: () {
-                      getHelp(context,nameController, messageController, 'Message',
-                          emergencyController, 'Phone', 'police', (value) {
-                        if (value!.length < 16) {
-                          return "Please enter some message.";
-                        }
-                      }, () async {
-                        String name = emergencyController.text.trim();
-                        String titleText = nameController.text;
-                        String bodyText = messageController.text;
-
-                        if (name != "") {
-                          DocumentSnapshot snap = await FirebaseFirestore
-                              .instance
-                              .collection("UserTokens")
-                              .doc(name)
-                              .get();
-
-                          String token = snap['token'];
-                          print(token);
-
-                          sendPushMessage(token, titleText, bodyText);
-                        }
-                      });
+                      print('nahi chal raha bhai');
+                      Notifications().getToken();
+                      getHelp(context,emergencyController,nameController, messageController, 'Message',
+                           'Phone', 'police');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstant.btnGreyColor,

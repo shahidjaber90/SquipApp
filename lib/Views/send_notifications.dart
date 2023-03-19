@@ -113,16 +113,20 @@ class _SendNotificationsPageState extends State<SendNotificationsPage> {
     }
   }
 
+
+
+
+
+
 void sendPushMessage(String token, String title, String body)async{
   try{
     await http.post( Uri.parse('https://fcm.google.apis.com/fcm/send'),
     headers: <String, String>{
-      'Content-Type' : 'applicatioin/json',
-      'Authorization' : 'key=BAYOmvGrRfIH3kPF2Mv-yrLQwcROo5Xle3i8ySm5AcxTb15L3yclVOHkVVBtOdqeCZdje8W1V8EM3XOmDk7UELU',
+      'Content-Type' : 'application/json',
+      'Authorization' : 'key=AAAAbo_dxUA:APA91bF_NVZHgvkviDIUWjSnAYIracxYidjm81kj_GcY2HkNQx-n0IGRLnceQtZzAvkAe2LMLDw76HtL760A-qhtnrBKZrCxE_s7EPcbu3BsIlP3Doqp8V1qzaazTnHKgCn_9ZLtyGZG',
     },
     body: jsonEncode(
       <String, dynamic>{
-        'priority': 'high',
         'data': <String,dynamic>{
           'click_action': 'FLUTTER_NOTIFICATION_CLICK',
           'status': 'done',
@@ -132,8 +136,9 @@ void sendPushMessage(String token, String title, String body)async{
         "notification":<String, dynamic>{
           "title": title,
           "body": body,
-          "android_channel_id": "dbfood"
+          // "android_channel_id": "dbfood"
         },
+        'priority': 'high',
         "to": token,
       },
     ),

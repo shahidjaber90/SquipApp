@@ -226,28 +226,7 @@ class _FireBrigadeMapViewPageState extends State<FireBrigadeMapViewPage> {
                 child: ElevatedButton(
                     onPressed: () {
                       getHelp(context,nameController, messageController, 'Message',
-                          emergencyController, 'Phone', 'police', (value) {
-                        if (value!.length < 16) {
-                          return "Please enter some message.";
-                        }
-                      }, () async {
-                        String name = emergencyController.text.trim();
-                        String titleText = nameController.text;
-                        String bodyText = messageController.text;
-
-                        if (name != "") {
-                          DocumentSnapshot snap = await FirebaseFirestore
-                              .instance
-                              .collection("UserTokens")
-                              .doc(name)
-                              .get();
-
-                          String token = snap['token'];
-                          print(token);
-
-                          sendPushMessage(token, titleText, bodyText);
-                        }
-                      });
+                          emergencyController, 'Phone', 'police');
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: ColorConstant.btnGreyColor,
